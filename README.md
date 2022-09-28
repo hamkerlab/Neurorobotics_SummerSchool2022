@@ -14,7 +14,6 @@ Ubuntu 14.04.6 (32bit)
 Python 2.7 (32bit)
 
 ```
-pip install pyyaml
 pip install opencv-python==4.2.0.32
 pip install opencv-contrib-python==4.2.0.32
 ```
@@ -60,7 +59,7 @@ The tasks are numbered and one could start from the beginning, i.e. `task_01.py`
 
 All the files use `argparse`, and thus typing `python task_*.py --help` in terminal would provide the list of arguments.
 
-All the robots are named after the dwarves from the Snow White fairy tale (these names could be seen on stickers behind the robot), e.g. Doc, Sleepy, etc. To simplify the commands and not type the IP address at the beginning a `yaml` file has been created with all the names and their corresponding IPs. If one wishes to run for example `task_01.py` they could simply type:
+All the robots are named after the dwarves from the Snow White fairy tale (these names could be seen on stickers behind the robot), e.g. Doc, Sleepy, etc. To simplify the commands and not type the IP address at the beginning a `json` file has been created with all the names and their corresponding IPs. If one wishes to run for example `task_01.py` they could simply type:
 
 ```
 python task_01.py --NAO_name sleepy
