@@ -4,9 +4,20 @@ import numpy as np
 from naoqi import ALProxy
 import time
 import os
-import yaml
+import json
 
 global motionProxy, camProxy
+
+def byteify(input):
+    if isinstance(input, dict):
+        return {byteify(key): byteify(value)
+                for key, value in input.iteritems()}
+    elif isinstance(input, list):
+        return [byteify(element) for element in input]
+    elif isinstance(input, unicode):
+        return input.encode('utf-8')
+    else:
+        return input
 
 def GetImage(frame, nameID):
     # obtain image
@@ -103,8 +114,8 @@ if __name__ == "__main__":
     NAO_name = args.NAO_name
     PORT = args.port
 
-    with open("./config.yaml", 'r') as stream:
-        config = yaml.load(stream, Loader=yaml.loader.SafeLoader)
+    with open("./config.json", 'r') as stream:
+        config = byteify(json.load(stream))
 
     tts = ALProxy("ALTextToSpeech", config['robot_names'][NAO_name], PORT)
     motionProxy = ALProxy("ALMotion", config['robot_names'][NAO_name], PORT)
@@ -131,14 +142,14 @@ if __name__ == "__main__":
     # yellow: 53,76,100
 
     color_bounds = {'yellow': [(10, 150, 150), (50, 255, 255)],
-                    'blue': [(70, 150, 50), (150, 255, 255)],
-                    'red': [(160, 150, 50), (180, 255, 255)]}
+                    'green': [(60, 100, 50), (100, 200, 150)],
+                    'red': [(0, 200, 200), (20, 255, 255)]}
 
     # Set Viewing direction of NAO in the beginning to [0,0] (infront)
 
     joint_names = ["HeadYaw", "HeadPitch"]
     init_angle = [0.0, 0.0]
-    fractionMaxSpeed = 0.2
+    fractionMaxSpeed = 0.1
     stiffness_val = 1.0
     body_name = "Head"
     motionProxy.setStiffnesses(body_name, stiffness_val)
