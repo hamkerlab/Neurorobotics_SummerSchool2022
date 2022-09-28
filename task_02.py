@@ -2,13 +2,23 @@ import argparse
 import cv2
 import sys
 import time
-import yaml
+import json
 import numpy as np
 
 from naoqi import ALProxy
 from naoqi import ALBroker
 from naoqi import ALModule
 
+def byteify(input):
+    if isinstance(input, dict):
+        return {byteify(key): byteify(value)
+                for key, value in input.iteritems()}
+    elif isinstance(input, list):
+        return [byteify(element) for element in input]
+    elif isinstance(input, unicode):
+        return input.encode('utf-8')
+    else:
+        return input
 
 class ReactToTouch(ALModule):
 	'''Streaming Video and Reacting to an Event (ALBroker and ALModule)'''
@@ -150,8 +160,8 @@ if __name__ == "__main__":
 	color_space = args.color_space
 	fps = args.fps
 
-	with open("./config.yaml", 'r') as stream:
-		config = yaml.load(stream, Loader=yaml.loader.SafeLoader)
+	with open("./config.json", 'r') as stream:
+		config = byteify(json.load(stream))
 
 	params = {}
 	params['sub_name'] = sub_name

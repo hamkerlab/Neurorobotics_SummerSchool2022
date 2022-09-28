@@ -2,7 +2,7 @@ import argparse
 import cv2
 import sys
 import time
-import yaml
+import json
 import numpy as np
 import math
 
@@ -10,6 +10,16 @@ from naoqi import ALProxy
 from naoqi import ALBroker
 from naoqi import ALModule
 
+def byteify(input):
+    if isinstance(input, dict):
+        return {byteify(key): byteify(value)
+                for key, value in input.iteritems()}
+    elif isinstance(input, list):
+        return [byteify(element) for element in input]
+    elif isinstance(input, unicode):
+        return input.encode('utf-8')
+    else:
+        return input
 
 class MoveHeadTouch(ALModule):
     '''Controlling the LEDs'''
@@ -191,8 +201,8 @@ if __name__ == "__main__":
     PORT = args.port
 
 
-    with open("./config.yaml", 'r') as stream:
-        config = yaml.load(stream, Loader=yaml.loader.SafeLoader)
+    with open("./config.json", 'r') as stream:
+        config = byteify(json.load(stream))
 
     params_cam = {}
     params_cam['sub_name'] = args.sub_name

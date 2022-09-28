@@ -4,9 +4,20 @@ import numpy as np
 from naoqi import ALProxy
 import time
 import os
-import yaml
+import json
 
 global motionProxy, camProxy
+
+def byteify(input):
+    if isinstance(input, dict):
+        return {byteify(key): byteify(value)
+                for key, value in input.iteritems()}
+    elif isinstance(input, list):
+        return [byteify(element) for element in input]
+    elif isinstance(input, unicode):
+        return input.encode('utf-8')
+    else:
+        return input
 
 def GetImage(frame, nameID):
     # obtain image
@@ -103,8 +114,8 @@ if __name__ == "__main__":
     NAO_name = args.NAO_name
     PORT = args.port
 
-    with open("./config.yaml", 'r') as stream:
-        config = yaml.load(stream, Loader=yaml.loader.SafeLoader)
+    with open("./config.json", 'r') as stream:
+        config = byteify(json.load(stream))
 
     tts = ALProxy("ALTextToSpeech", config['robot_names'][NAO_name], PORT)
     motionProxy = ALProxy("ALMotion", config['robot_names'][NAO_name], PORT)
