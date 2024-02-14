@@ -76,12 +76,14 @@ def DetectBall(frame, colorLower, colorUpper):
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
         # only proceed if the radius meets a minimum size
-        # if radius > 10: # TODO: why is this removed?
+        if radius > 10:
         # draw the circle and centroid on the frame,
         # then update the list of tracked points
-        cv2.circle(frame, (int(x), int(y)), int(radius),
-                   (0, 255, 255), 2)
-        cv2.circle(frame, center, 5, (0, 0, 255), -1)
+            cv2.circle(frame, (int(x), int(y)), int(radius),
+                       (0, 255, 255), 2)
+            cv2.circle(frame, center, 5, (0, 0, 255), -1)
+        else:
+            center = None
 
     return frame, center
 
@@ -142,14 +144,14 @@ if __name__ == "__main__":
     # yellow: 53,76,100
 
     color_bounds = {'yellow': [(10, 150, 150), (50, 255, 255)],
-                    'blue': [(70, 150, 50), (150, 255, 255)],
-                    'red': [(160, 150, 50), (180, 255, 255)]}
+                    'green': [(60, 100, 50), (100, 200, 150)],
+                    'red': [(0, 200, 200), (20, 255, 255)]}
 
     # Set Viewing direction of NAO in the beginning to [0,0] (infront)
 
     joint_names = ["HeadYaw", "HeadPitch"]
     init_angle = [0.0, 0.0]
-    fractionMaxSpeed = 0.2
+    fractionMaxSpeed = 0.1
     stiffness_val = 1.0
     body_name = "Head"
     motionProxy.setStiffnesses(body_name, stiffness_val)

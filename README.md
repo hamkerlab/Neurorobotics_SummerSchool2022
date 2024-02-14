@@ -10,7 +10,9 @@ All the dependencies and requirement are already added or installed on your Ubun
 In case one would like to see the installation procedure, this [webpage](http://doc.aldebaran.com/2-1/dev/python/install_guide.html) contains all the steps, the possible errors and their corresponding solutions. It should be noted the path to NAOqi is included and there is no need to set the environment as explained [here](http://doc.aldebaran.com/2-1/dev/python/install_guide.html#linux).
 
 To replicate the results here are the dependencies in more detail.
+
 Ubuntu 14.04.6 (32bit)
+
 Python 2.7 (32bit)
 
 ```

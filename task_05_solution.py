@@ -76,12 +76,14 @@ def DetectBall(frame, colorLower, colorUpper):
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
         # only proceed if the radius meets a minimum size
-        # if radius > 10: # TODO: why is this removed?
+        if radius > 10:
         # draw the circle and centroid on the frame,
         # then update the list of tracked points
-        cv2.circle(frame, (int(x), int(y)), int(radius),
-                   (0, 255, 255), 2)
-        cv2.circle(frame, center, 5, (0, 0, 255), -1)
+            cv2.circle(frame, (int(x), int(y)), int(radius),
+                       (0, 255, 255), 2)
+            cv2.circle(frame, center, 5, (0, 0, 255), -1)
+        else:
+            center = None
 
     return frame, center
 
